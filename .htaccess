@@ -1,0 +1,13 @@
+AuthType Basic
+AuthName "Panel de Administracion - Clinica Dental"
+AuthUserFile "C:/xampp/htdocs/infantil/.htpasswd"
+Require valid-user
+
+<Files "admin.html">
+    Require valid-user
+</Files>
+
+<FilesMatch "\.(php|html|js|css)$">
+    Allow from all
+    Satisfy any
+</FilesMatch>

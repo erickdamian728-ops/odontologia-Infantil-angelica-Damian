@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PANEL SEGURO DE ADMINISTRACIÓN</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* 🐛 CORRECCIÓN CSS: El @import debe ir primero */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+        
+        :root {
+            --color-principal: #ff69b4; --color-secundario: #e0559f; --color-fondo: #fcf5f7; --color-texto: #333;
+            --fuente-titulo: 'Poppins', sans-serif; --fuente-cuerpo: 'Arial', sans-serif;
+        }
+        
+        body { margin: 0; font-family: var(--fuente-cuerpo); color: var(--color-texto); background: #f8f8f8; }
+        h1, h2, h3 { font-family: var(--fuente-titulo); color: var(--color-secundario); }
+        main { padding: 20px; max-width: 1200px; margin: auto; }
+        
+        form { display: flex; flex-direction: column; gap: 15px; max-width: 450px; margin: 25px auto; padding: 25px; border-radius: 10px; background: var(--color-fondo); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        input, textarea, select { padding: 12px; border-radius: 8px; border: 1px solid #ddd; width: 100%; font-size: 16px; box-sizing: border-box; }
+        .btn-primary { background: var(--color-principal); color: #fff; padding: 14px 25px; border-radius: 8px; border: none; cursor: pointer; font-size: 16px; font-weight: bold; transition: background 0.3s, transform 0.1s; text-decoration: none; text-align: center; }
+        .btn-primary:hover { background: var(--color-secundario); transform: translateY(-1px); }
+        .btn-danger { background-color: #dc3545; padding: 5px 10px; font-size: 12px; }
+        .btn-danger:hover { background-color: #c82333; }
+        .btn-primary:disabled { background-color: #ccc; cursor: not-allowed; }
+        
+        #admin { margin-top: 50px; padding: 40px; background: #fff; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        table { width: 100%; border-collapse: collapse; margin-top: 25px; font-size: 14px; }
+        th, td { border-bottom: 1px solid #eee; padding: 12px 10px; text-align: left; }
+        th { background: var(--color-fondo); color: var(--color-secundario); font-weight: 600; }
+        footer { background: var(--color-principal); color: #fff; text-align: center; padding: 25px; margin-top: 40px; border-top: 5px solid var(--color-secundario); }
+        #mensajeLogin { color: red; text-align: center; margin-top: 10px; }
+
+        /* Estilos específicos del formulario de gestión */
+        #gestionCitas label { margin-top: 10px; font-weight: bold; color: var(--color-secundario); }
+        #gestionCitas form > div { display: flex; flex-direction: column; gap: 5px; }
+        #btnLimpiarForm { background-color: #777; margin-top: 5px; }
+        #btnLimpiarForm:hover { background-color: #555; }
+
+        /* Estilos del Menú de Pestañas */
+        #mainMenu { display: flex; justify-content: center; margin-bottom: 30px; border-bottom: 2px solid #eee; }
+        #mainMenu button { 
+            padding: 15px 25px; border: none; background: transparent; cursor: pointer; 
+            font-size: 16px; font-weight: 600; color: #aaa; transition: all 0.3s;
+            border-bottom: 3px solid transparent; margin: 0 5px;
+        }
+        #mainMenu button.active { 
+            color: var(--color-principal); 
+            border-bottom: 3px solid var(--color-principal);
+        }
+        .content-section { display: none; padding-top: 20px; }
+        .content-section.active { display: block; }
+
+        /* Estilos para impresión */
+        #recetaContent { max-width: 650px; margin: 25px auto; padding: 30px; border: 1px solid #ccc; border-radius: 8px; background: #fff; }
+        #recetaContent h3 { text-align: center; color: var(--color-principal); margin-bottom: 20px; }
+        #recetaContent textarea { min-height: 200px; }
+
+        @media print {
+            body * { visibility: hidden; }
+            #printArea, #printArea * { visibility: visible; }
+            #printArea { 
+                position: absolute; left: 0; top: 0; 
+                width: 21cm; height: 29.7cm; 
+                padding: 3cm 2.5cm; /* Márgenes amplios */
+                box-sizing: border-box;
+                font-family: 'Times New Roman', serif;
+                font-size: 12pt;
+                color: #333;
+                background: white;
+            }
+            #recetaForm { display: none; }
+
+            .doc-header-simple {
+                text-align: center;
+                margin-bottom: 30px;
+                line-height: 1.2;
+            }
+            .doc-body-classic p, .doc-body-classic h4 {
+                margin-top: 5px;
+                margin-bottom: 5px;
+            }
+            .doc-footer-classic {
+                width: 100%;
+                text-align: center;
+            }
+            @page { size: A4; margin: 0; }
+            /* Se asegura que el contenido de impresión use tamaño A4 */
+        }
+    </style>
+</head>
+<body>
+
+<main>
+    <header style="background: var(--color-principal); color: white; padding: 15px; text-align: center; border-radius: 5px; display: flex; justify-content: space-between; align-items: center;">
+        <h1 style="margin: 0; font-size: 24px; color: white;">Panel de Administración (Seguro)</h1>
+        <div>
+            <p style="margin: 5px 0 0 0; display: inline-block; margin-right: 15px;"><a href="index.html" style="color: #fff0f5; font-weight: bold;">Regresar a Página Pública</a></p>
+            <button onclick="cerrarSesion()" class="btn-primary" style="padding: 5px 10px; font-size: 14px; background: #c82333;">
+                <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+            </button>
+        </div>
+    </header>
+
+    <section id="admin">
+        <div id="adminPanel">
+            <div id="mainMenu">
+                <button class="menu-tab active" data-target="citas"><i class="fas fa-calendar-alt"></i> Citas / Gestión</button>
+                <button class="menu-tab" data-target="historiales"><i class="fas fa-file-medical"></i> Historiales Clínicos</button>
+                <button class="menu-tab" data-target="impresion"><i class="fas fa-print"></i> Diagnósticos / Recetas</button>
+            </div>
+            
+            <div id="citas" class="content-section active">
+                <section id="gestionCitas" style="background: #fdfdfd; padding: 20px; border-radius: 10px; border: 1px solid #eee; margin-bottom: 40px;">
+                    <h2 style="text-align:center;">Gestión de Citas (Agendar/Editar)</h2>
+                    <form id="citaAdminForm" style="max-width: 400px; margin: 15px auto;">
+                        <input type="hidden" id="cita_id" name="cita_id">
+                        
+                        <label for="tipoAdmin">Tipo:</label>
+                        <select id="tipoAdmin" name="tipo" required>
+                            <option value="Cita Regular">Cita Regular</option>
+                            <option value="Emergencia">Emergencia</option>
+                        </select>
+
+                        <label for="nombreAdmin">Nombre del Paciente:</label>
+                        <input type="text" id="nombreAdmin" name="nombre" required>
+
+                        <div id="campoResponsable">
+                            <label for="responsableAdmin">Responsable:</label>
+                            <input type="text" id="responsableAdmin" name="responsable">
+                        </div>
+
+                        <label for="emailAdmin">Email:</label>
+                        <input type="email" id="emailAdmin" name="email">
+
+                        <label for="telefonoAdmin">Teléfono (10 dígitos):</label>
+                        <input type="tel" id="telefonoAdmin" name="telefono" required maxlength="10">
+
+                        <div id="campoFecha">
+                            <label for="fechaAdmin">Fecha:</label>
+                            <input type="date" id="fechaAdmin" name="fecha">
+                        </div>
+
+                        <div id="campoHora">
+                            <label for="horaAdmin">Hora:</label>
+                            <input type="time" id="horaAdmin" name="hora" step="1800"> </div>
+
+                        <div id="campoMotivo">
+                            <label for="motivoAdmin">Motivo / Descripción (Solo Emergencia):</label>
+                            <textarea id="motivoAdmin" name="motivo"></textarea>
+                        </div>
+
+                        <button type="submit" id="btnGuardarCita" class="btn-primary">Agendar Nueva Cita</button>
+                        <button type="button" id="btnLimpiarForm" class="btn-primary" style="background-color: #777;">Limpiar Formulario</button>
+                    </form>
+                </section>
+                <h3 style="margin-top: 30px;"><i class="far fa-calendar-alt"></i> Citas Agendadas</h3>
+                <p id="mensajeCitas" style="text-align:center;"></p>
+                <table>
+                    <thead><tr><th>ID</th><th>Nombre Niño/a</th><th>Tutor</th><th>Email</th><th>Teléfono</th><th>Fecha</th><th>Hora</th><th>Acción</th></tr></thead>
+                    <tbody id="tablaCitas"></tbody>
+                </table>
+
+                <h3 style="margin-top: 30px;"><i class="fas fa-exclamation-triangle"></i> Citas de Emergencia</h3>
+                <p id="mensajeEmergencias" style="text-align:center;"></p>
+                <table>
+                    <thead><tr><th>ID</th><th>Nombre</th><th>Teléfono</th><th>Motivo</th><th>Acción</th></tr></thead>
+                    <tbody id="tablaEmergencias"></tbody>
+                </table>
+
+                <div style="margin-top: 30px; text-align: center;">
+                    <button id="refreshBtn" class="btn-primary" onclick="cargarDatosAdmin()">Recargar Datos</button>
+                </div>
+            </div>
+
+            <div id="historiales" class="content-section">
+                <h2 style="text-align:center;"><i class="fas fa-file-medical"></i> Historiales Clínicos</h2>
+                <form id="historialForm" enctype="multipart/form-data">
+                    <input type="text" name="paciente" placeholder="Nombre del paciente" required>
+                    <textarea type="text" name="descripcion" placeholder="Notas del historial" rows="3" required></textarea>
+                    <label for="archivo_subida" style="font-size: 14px; margin-top: -10px;">Adjuntar Archivo (Max 5MB):</label>
+                    <input type="file" name="archivo" id="archivo_subida" required style="padding: 5px;" accept="image/*,application/pdf">
+                    <button type="submit" class="btn-primary">Subir Historial y Guardar Metadata</button>
+                    <p id="mensajeHistorial" style="text-align:center;"></p>
+                </form>
+
+                <div style="margin-top: 25px;">
+                    <input type="text" id="buscadorHistoriales" placeholder="Buscar historial por nombre de paciente..." style="max-width: 450px; margin: auto; display: block;">
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Paciente</th>
+                            <th>Descripción</th>
+                            <th>Archivo</th>
+                            <th>Acciones</th> 
+                        </tr>
+                    </thead>
+                    <tbody id="tablaHistoriales"></tbody>
+                </table>
+            </div>
+
+            <div id="impresion" class="content-section">
+                <h2 style="text-align:center;"><i class="fas fa-print"></i> Generador de Diagnósticos y Recetas</h2>
+                <form id="recetaForm" style="max-width: 650px;">
+                    <input type="text" id="recetaPaciente" placeholder="Nombre completo del paciente" required>
+                    <input type="text" id="recetaDiagnostico" placeholder="Diagnóstico principal" required>
+                    <textarea id="recetaContenido" placeholder="Escriba la receta (Medicamentos, dosis, indicaciones) o el resumen del diagnóstico." rows="10" required></textarea>
+                    <button type="button" class="btn-primary" onclick="imprimirDiagnostico()">Imprimir Documento</button>
+                </form>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <p>&copy; 2025 DRA. ANGÉLICA DAMIÁN - ODONTOLOGÍA INFANTIL</p>
+</footer>
+
+<div id="printArea" style="display: none;"></div>
+
+<script>
+    // ***************************************************************
+    // RUTAS ABSOLUTAS PARA APIs PHP
+    // ***************************************************************
+    const BASE_URL = 'http://localhost/odontologia_app/'; // <<--- ASUMIENDO ESTA RUTA DE PROYECTO
+    
+    const API_READ_CITAS = BASE_URL + 'leer_citas.php';
+    const API_DELETE_CITA = BASE_URL + 'eliminar_cita.php';
+    const API_UPDATE_CITA = BASE_URL + 'actualizar_cita.php'; 
+    const API_SAVE_CITA = BASE_URL + 'guardar_cita.php'; 
+    const API_UPLOAD_HISTORIAL = BASE_URL + 'subir_historial.php';
+    const API_READ_HISTORIAL = BASE_URL + 'leer_historiales.php';
+    const API_DELETE_HISTORIAL = BASE_URL + 'eliminar_historial.php';
+    // ***************************************************************
+
+    const citaAdminForm = document.getElementById('citaAdminForm');
+    const btnGuardarCita = document.getElementById('btnGuardarCita');
+    const tipoAdminSelect = document.getElementById('tipoAdmin');
+    const buscadorHistoriales = document.getElementById('buscadorHistoriales');
+
+    // =========================================================================
+    // FUNCIÓN CERRAR SESIÓN (MODIFICADA PARA USAR LocalStorage)
+    // =========================================================================
+    function cerrarSesion() {
+        if (confirm("¿Está seguro de que desea cerrar sesión?")) {
+            localStorage.removeItem('admin_session'); // Elimina la marca de sesión
+            localStorage.removeItem('admin_user'); // Elimina el nombre de usuario
+            window.location.href = 'login.html'; // Redirige al login
+        }
+    }
+
+    // =========================================================================
+    // LÓGICA DEL MENÚ DE PESTAÑAS
+    // =========================================================================
+    function mostrarSeccion(targetId) {
+        // 1. Remover 'active' de todos los botones y secciones
+        document.querySelectorAll('.menu-tab').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
+
+        // 2. Activar el botón y la sección objetivo
+        document.querySelector(`.menu-tab[data-target="${targetId}"]`).classList.add('active');
+        document.getElementById(targetId).classList.add('active');
+        
+        // 3. Recargar datos específicos
+        if (targetId === 'citas') {
+            cargarCitas();
+        } else if (targetId === 'historiales') {
+            cargarHistoriales(buscadorHistoriales.value);
+        }
+    }
+
+    // Listener para los botones del menú
+    document.querySelectorAll('.menu-tab').forEach(button => {
+        button.addEventListener('click', () => {
+            const targetId = button.getAttribute('data-target');
+            mostrarSeccion(targetId);
+        });
+    });
+
+    // =========================================================================
+    // FUNCIONES DE IMPRESIÓN / DIAGNÓSTICO (Diseño Clásico Final)
+    // =========================================================================
+    function imprimirDiagnostico() {
+        const paciente = document.getElementById('recetaPaciente').value;
+        const diagnostico = document.getElementById('recetaDiagnostico').value;
+        const contenido = document.getElementById('recetaContenido').value;
+
+        if (!paciente || !diagnostico || !contenido) {
+            alert("Por favor, rellene todos los campos del diagnóstico/receta antes de imprimir.");
+            return;
+        }
+
+        const fechaActual = new Date().toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' });
+        
+        // Información de contacto y profesional
+        const cedulaProfesional = '11639232';
+        const direccionCompleta = 'Jesús Romero Flores #48 Col. Villa Artesanal, C.P. 60257 Paracho, Michoacán.';
+        const telefono = 'Tel: 443 110 8335';
+
+        const printContent = `
+            <div id="printArea">
+                
+                <div class="doc-header-simple">
+                    <p style="font-weight: bold; margin-bottom: 5px;">DRA. ANGÉLICA DAMIÁN</p>
+                    <p style="font-size: 10pt; margin: 0 0 2px 0;">ODONTOLOGÍA INFANTIL | Ced. Prof. ${cedulaProfesional}</p>
+                    <p style="font-size: 10pt; margin: 0 0 2px 0;">${direccionCompleta}</p>
+                    <p style="font-size: 10pt; margin: 0 0 10px 0;">${telefono}</p>
+                    <div style="border-top: 1px solid #333;"></div>
+                </div>
+
+                <div class="doc-body-classic">
+                    <p><strong>Paciente:</strong> ${paciente}</p>
+                    <p><strong>Diagnóstico:</strong> ${diagnostico}</p>
+                    <p><strong>Fecha:</strong> ${fechaActual}</p>
+                    
+                    <h4 style="margin-top: 25px; margin-bottom: 15px; font-size: 13pt;">RECETA / INDICACIONES</h4>
+                    
+                    <pre style="white-space: pre-wrap; font-family: 'Times New Roman', serif; font-size: 12pt; line-height: 1.5;">${contenido}</pre>
+                </div>
+                
+                <div class="doc-footer-classic">
+                    <div class="firma-line" style="width: 250px; border-top: 1px solid #333; margin: 100px auto 5px auto; padding-top: 5px; text-align: center;">
+                        Firma y Sello del Odontólogo
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // ---------------------------------------------------------------------
+        // Lógica de impresión
+        // ---------------------------------------------------------------------
+        const printWindow = window.open('', '_blank');
+        printWindow.document.write('<html><head><title>Imprimir Receta</title>');
+        
+        // Estilos de impresión (Inyectados para este diseño)
+        printWindow.document.write('<style>');
+        printWindow.document.write(`
+            @media print {
+                body * { visibility: hidden; }
+                #printArea, #printArea * { visibility: visible; }
+                #printArea { 
+                    position: absolute; left: 0; top: 0; 
+                    width: 21cm; height: 29.7cm; 
+                    padding: 3cm 2.5cm; /* Márgenes amplios */
+                    box-sizing: border-box;
+                    font-family: 'Times New Roman', serif;
+                    font-size: 12pt;
+                    color: #333;
+                    background: white;
+                }
+                #recetaForm { display: none; }
+
+                .doc-header-simple {
+                    text-align: center;
+                    margin-bottom: 30px;
+                    line-height: 1.2;
+                }
+                .doc-body-classic p, .doc-body-classic h4 {
+                    margin-top: 5px;
+                    margin-bottom: 5px;
+                }
+                .doc-footer-classic {
+                    width: 100%;
+                    text-align: center;
+                }
+                @page { size: A4; margin: 0; }
+            }
+        `);
+        printWindow.document.write('</style>');
+        printWindow.document.write('</head><body>');
+        printWindow.document.write(printContent);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        printWindow.print();
+    }
+
+
+    // =========================================================================
+    // FUNCIONES DE CARGA DE DATOS (Mantenidas)
+    // =========================================================================
+
+    async function cargarCitas() {
+        const tablaCitas = document.getElementById('tablaCitas');
+        const tablaEmergencias = document.getElementById('tablaEmergencias');
+        document.getElementById('mensajeCitas').textContent = 'Cargando datos...';
+        
+        try {
+            const response = await fetch(API_READ_CITAS);
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+                throw new Error(data.message || 'Error al conectar con la base de datos.');
+            }
+
+            tablaCitas.innerHTML = '';
+            tablaEmergencias.innerHTML = '';
+            let citasRegularesCount = 0;
+            let emergenciasCount = 0;
+
+            data.citas.forEach(c => {
+                const btnEliminar = `<button class="btn-primary btn-danger" onclick="eliminarCita(${c.id})" style="margin-left: 5px;">Eliminar</button>`;
+                const btnEditar = `<button class="btn-primary" onclick='abrirFormularioEdicion(${JSON.stringify(c)})' style="padding: 5px 10px; font-size: 12px;">Editar</button>`;
+
+                if (c.tipo === 'Cita Regular') {
+                    const row = tablaCitas.insertRow();
+                    row.insertCell(0).textContent = c.id;
+                    row.insertCell(1).textContent = c.nombre; 
+                    row.insertCell(2).textContent = c.responsable || 'N/A';
+                    row.insertCell(3).textContent = c.email; 
+                    row.insertCell(4).textContent = c.telefono;
+                    row.insertCell(5).textContent = c.fecha; 
+                    row.insertCell(6).textContent = c.hora;
+                    row.insertCell(7).innerHTML = btnEditar + btnEliminar;
+                    citasRegularesCount++;
+                } else if (c.tipo === 'Emergencia') {
+                    const row = tablaEmergencias.insertRow();
+                    row.insertCell(0).textContent = c.id;
+                    row.insertCell(1).textContent = c.nombre; 
+                    row.insertCell(2).textContent = c.telefono;
+                    row.insertCell(3).textContent = c.motivo;
+                    row.insertCell(4).innerHTML = btnEditar + btnEliminar;
+                    emergenciasCount++;
+                }
+            });
+
+            document.getElementById('mensajeCitas').textContent = `Citas regulares: ${citasRegularesCount}. Emergencias: ${emergenciasCount}.`;
+            document.getElementById('mensajeEmergencias').textContent = '';
+        } catch (error) {
+            console.error("Error de carga de citas:", error);
+            document.getElementById('mensajeCitas').textContent = `❌ Error al cargar citas: ${error.message}`;
+            document.getElementById('mensajeEmergencias').textContent = '';
+        }
+    }
+
+    async function eliminarCita(id) {
+        if (!confirm(`¿Está seguro de eliminar la cita con ID ${id}?`)) return;
+        
+        try {
+            const response = await fetch(API_DELETE_CITA, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: id })
+            });
+
+            const data = await response.json();
+
+            if (response.ok && data.success) {
+                alert('✅ Cita eliminada correctamente.');
+                cargarCitas();
+            } else {
+                throw new Error(data.message || 'No se pudo eliminar el registro.');
+            }
+        } catch (error) {
+            console.error("Error al eliminar cita:", error);
+            alert(`Error al eliminar cita: ${error.message}`);
+        }
+    }
+
+    async function cargarHistoriales(searchTerm = '') {
+        const tablaHistoriales = document.getElementById('tablaHistoriales');
+        tablaHistoriales.innerHTML = ''; 
+        const url = searchTerm ? `${API_READ_HISTORIAL}?search=${encodeURIComponent(searchTerm)}` : API_READ_HISTORIAL;
+
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+                throw new Error(data.message || 'Error al conectar con la base de datos.');
+            }
+
+            if (data.historiales.length === 0) {
+                const row = tablaHistoriales.insertRow();
+                row.insertCell(0).colSpan = 5;
+                row.cells[0].textContent = searchTerm ? 'No se encontraron historiales.' : 'No hay historiales clínicos registrados.';
+                row.cells[0].style.textAlign = 'center';
+                return;
+            }
+
+            data.historiales.forEach(h => {
+                const row = tablaHistoriales.insertRow();
+                const btnEliminar = `<button class="btn-primary btn-danger" onclick="eliminarHistorial(${h.id}, '${h.file_path}')">Eliminar</button>`;
+                const btnVer = `<a href="${h.file_path}" target="_blank" class="btn-primary" style="padding: 5px 10px; font-size: 12px; margin-right: 5px;">Ver <i class="fas fa-file-alt"></i></a>`;
+
+                row.insertCell(0).textContent = h.id;
+                row.insertCell(1).textContent = h.paciente;
+                row.insertCell(2).textContent = h.descripcion;
+                row.insertCell(3).innerHTML = `<a href="${h.file_path}" target="_blank">${h.file_name}</a>`;
+                row.insertCell(4).innerHTML = btnVer + btnEliminar;
+            });
+
+        } catch (error) {
+            console.error("Error de carga de historiales:", error);
+            const row = tablaHistoriales.insertRow();
+            row.insertCell(0).colSpan = 5;
+            row.cells[0].textContent = `❌ Error al cargar historiales: ${error.message}`;
+            row.cells[0].style.color = 'red';
+            row.cells[0].style.textAlign = 'center';
+        }
+    }
+
+    async function eliminarHistorial(id, file_path) {
+        if (!confirm(`¿Está seguro de eliminar el historial con ID ${id} y su archivo?`)) return;
+
+        try {
+            const response = await fetch(API_DELETE_HISTORIAL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: id, file_path: file_path })
+            });
+
+            const data = await response.json();
+
+            if (response.ok && data.success) {
+                alert('✅ Historial eliminado correctamente (registro y archivo).');
+                cargarHistoriales(buscadorHistoriales.value); 
+            } else {
+                throw new Error(data.message || 'No se pudo eliminar el registro.');
+            }
+        } catch (error) {
+            console.error("Error al eliminar historial:", error);
+            alert(`Error al eliminar historial: ${error.message}`);
+        }
+    }
+
+    // =========================================================================
+    // FUNCIONES DE FORMULARIO DE CITAS
+    // =========================================================================
+
+    function toggleCamposCita() {
+        const tipo = tipoAdminSelect.value;
+        const isRegular = tipo === 'Cita Regular';
+        
+        document.getElementById('campoResponsable').style.display = isRegular ? 'flex' : 'none';
+        document.getElementById('campoFecha').style.display = isRegular ? 'flex' : 'none';
+        document.getElementById('campoHora').style.display = isRegular ? 'flex' : 'none';
+        
+        document.getElementById('campoMotivo').style.display = isRegular ? 'none' : 'flex';
+
+        document.getElementById('fechaAdmin').required = isRegular;
+        document.getElementById('horaAdmin').required = isRegular;
+        document.getElementById('motivoAdmin').required = !isRegular;
+    }
+    
+    function limpiarFormulario() {
+        citaAdminForm.reset();
+        document.getElementById('cita_id').value = '';
+        btnGuardarCita.textContent = 'Agendar Nueva Cita';
+        toggleCamposCita(); 
+    }
+
+    function abrirFormularioEdicion(cita) {
+        document.getElementById('cita_id').value = cita.id;
+        document.getElementById('tipoAdmin').value = cita.tipo;
+        document.getElementById('nombreAdmin').value = cita.nombre;
+        document.getElementById('responsableAdmin').value = cita.responsable || '';
+        document.getElementById('emailAdmin').value = cita.email || '';
+        document.getElementById('telefonoAdmin').value = cita.telefono;
+        document.getElementById('fechaAdmin').value = cita.fecha || ''; 
+        document.getElementById('horaAdmin').value = cita.hora || '';
+        document.getElementById('motivoAdmin').value = cita.motivo || '';
+        
+        btnGuardarCita.textContent = 'Actualizar Cita #' + cita.id;
+        toggleCamposCita(); 
+        
+        document.getElementById('gestionCitas').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    async function guardarCitaAdmin(e) {
+        e.preventDefault();
+
+        const cita_id = document.getElementById('cita_id').value;
+        const isUpdate = !!cita_id;
+        
+        const actionUrl = isUpdate ? API_UPDATE_CITA : API_SAVE_CITA; 
+        const tipoCita = tipoAdminSelect.value;
+
+        const data = {
+            id: cita_id, 
+            tipo: tipoCita,
+            nombre: document.getElementById('nombreAdmin').value,
+            responsable: document.getElementById('responsableAdmin').value || null,
+            email: document.getElementById('emailAdmin').value || null,
+            telefono: document.getElementById('telefonoAdmin').value,
+            fecha: (tipoCita === 'Cita Regular' ? document.getElementById('fechaAdmin').value : null),
+            hora: (tipoCita === 'Cita Regular' ? document.getElementById('horaAdmin').value : null),
+            motivo: (tipoCita === 'Emergencia' ? document.getElementById('motivoAdmin').value : null),
+        };
+
+        btnGuardarCita.disabled = true;
+
+        try {
+            const response = await fetch(actionUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+
+            if (response.ok && result.success) {
+                alert(`✅ Cita ${isUpdate ? 'actualizada' : 'agendada'} correctamente.`);
+                limpiarFormulario();
+                cargarCitas();
+            } else {
+                throw new Error(result.message || 'Error desconocido al guardar/actualizar.');
+            }
+        } catch (error) {
+            console.error('Error al guardar/actualizar la cita:', error);
+            alert(`❌ Error al guardar/actualizar la cita: ${error.message}`);
+        } finally {
+            btnGuardarCita.disabled = false;
+        }
+    }
+
+    // =========================================================================
+    // EVENT LISTENERS
+    // =========================================================================
+
+    tipoAdminSelect.addEventListener('change', toggleCamposCita);
+    citaAdminForm.addEventListener('submit', guardarCitaAdmin);
+    document.getElementById('btnLimpiarForm').addEventListener('click', limpiarFormulario);
+    
+    // Subida de Historial
+    const historialForm = document.getElementById('historialForm');
+    const mensajeHistorial = document.getElementById('mensajeHistorial');
+
+    if (historialForm) {
+        historialForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const boton = historialForm.querySelector('button');
+            const formData = new FormData(historialForm);
+            
+            boton.disabled = true;
+            mensajeHistorial.textContent = 'Subiendo archivo...';
+            mensajeHistorial.style.color = 'orange';
+
+            try {
+                const response = await fetch(API_UPLOAD_HISTORIAL, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (!response.ok || !data.success) {
+                    throw new Error(data.message || 'Fallo al subir archivo o guardar metadata.');
+                }
+                
+                mensajeHistorial.textContent = '✅ Historial guardado con éxito.';
+                historialForm.reset();
+                cargarHistoriales(); 
+            } catch (error) {
+                console.error("Error al subir historial:", error);
+                mensajeHistorial.textContent = `❌ Error: ${error.message}`;
+                mensajeHistorial.style.color = 'red';
+            } finally {
+                boton.disabled = false;
+            }
+        });
+    }
+
+    // Búsqueda de Historial
+    buscadorHistoriales.addEventListener('keyup', debounce(() => {
+        cargarHistoriales(buscadorHistoriales.value);
+    }, 300));
+
+    function debounce(func, delay) {
+        let timeout;
+        return function(...args) {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(this, args), delay);
+        };
+    }
+
+
+    // =========================================================================
+    // INICIO DEL SISTEMA (Verificación de Sesión)
+    // =========================================================================
+    
+    window.onload = () => {
+        // Verifica si la sesión está activa en LocalStorage
+        if (localStorage.getItem('admin_session') !== 'active') {
+            window.location.href = 'login.html'; // Redirige al login si no hay sesión
+        } else {
+            // Si la sesión está activa, carga los datos
+            toggleCamposCita();
+            cargarDatosAdmin(); 
+        }
+    };
+
+    function cargarDatosAdmin() {
+        cargarCitas();
+        cargarHistoriales();
+    }
+</script>
+</body>
+</html>

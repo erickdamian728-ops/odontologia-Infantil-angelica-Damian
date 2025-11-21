@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DRA. ANGÉLICA DAMIÁN | ODONTOLOGÍA INFANTIL</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root{--color-principal:#ff69b4;--color-secundario:#e0559f;--color-fondo:#fcf5f7;--color-texto:#333;--fuente-titulo:'Poppins',sans-serif;--fuente-cuerpo:'Arial',sans-serif}
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+        html{scroll-behavior:smooth}
+        body{margin:0;font-family:var(--fuente-cuerpo);color:var(--color-texto);background:url('https://i.ibb.co/xK3H8GtT/cbce2b03-23af-48b4-951b-fbc7a1706745-1.jpg') no-repeat center center fixed;background-size:cover;background-color:var(--color-fondo)}
+        h1,h2,h3{font-family:var(--fuente-titulo);color:var(--color-secundario)}
+        header{display:flex;align-items:center;justify-content:space-between;background:var(--color-principal);padding:10px 30px;color:#fff;position:sticky;top:0;z-index:1000;box-shadow:0 4px 12px rgba(0,0,0,.1)}
+        header .logo{display:flex;align-items:center;gap:15px}
+        header .logo img{width:70px;height:auto;max-height:60px;border-radius:5px;border:2px solid #fff;object-fit:contain;background-color:#fff;padding:2px}
+        nav{display:flex;gap:25px}
+        nav a{color:#fff;text-decoration:none;font-weight:600;padding:5px 0;transition:color .3s}
+        nav a:hover{color:#fff0f5;border-bottom:2px solid #fff0f5}
+        section{padding:80px 20px;max-width:1100px;margin:40px auto;background:rgba(255,255,255,.95);border-radius:15px;box-shadow:0 8px 20px rgba(0,0,0,.05);line-height:1.7}
+        .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:25px;margin-top:30px}
+        .card{background:var(--color-fondo);border-radius:10px;padding:25px;box-shadow:0 4px 10px rgba(0,0,0,.08);text-align:center;transition:transform .3s,box-shadow .3s;border-top:5px solid var(--color-principal)}
+        .card:hover{transform:translateY(-5px);box-shadow:0 10px 25px rgba(0,0,0,.1)}
+        form{display:flex;flex-direction:column;gap:15px;max-width:450px;margin:25px auto;padding:25px;border-radius:10px;background:var(--color-fondo);box-shadow:0 4px 10px rgba(0,0,0,.05)}
+        input,select,textarea{padding:12px;border-radius:8px;border:1px solid #ddd;width:100%;font-size:16px;box-sizing:border-box}
+        .btn-primary{background:var(--color-principal);color:#fff;padding:14px 25px;border-radius:8px;border:none;cursor:pointer;font-size:16px;font-weight:700;transition:background .3s,transform .1s;text-decoration:none;text-align:center}
+        .btn-primary:hover{background:var(--color-secundario);transform:translateY(-1px)}
+        .btn-primary:disabled{background-color:#ccc;cursor:not-allowed;}
+        footer{background:var(--color-principal);color:#fff;text-align:center;padding:25px;margin-top:40px;border-top:5px solid var(--color-secundario)}
+        footer a{color:#fff;text-decoration:none;transition:color .3s}
+        footer a:hover{color:#fff0f5}
+        #mensaje, #mensajeEmergencia{text-align:center;font-weight:bold;margin-top:15px;min-height:20px}
+        @media(max-width:768px){header{flex-direction:column;gap:10px}nav{flex-wrap:wrap;justify-content:center;gap:10px}section{padding:40px 15px;margin:20px auto}.cards{grid-template-columns:1fr}header .logo img{width:60px;max-height:50px}header .logo h1{font-size:20px}header .logo p{display:none}}
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <img src="https://i.ibb.co/jPkwxG8b/Whats-App-Image-2025-09-29-at-2-51-34-PM-1.jpg" alt="Logo Dra. Angélica Damián">
+        <div>
+            <h1 style="margin:0; font-size:22px;">DRA. ANGÉLICA DAMIÁN</h1>
+            <p style="margin:0; font-size:13px;">ODONTOLOGÍA INFANTIL</p>
+        </div>
+    </div>
+    <nav>
+        <a href="#inicio">Inicio</a>
+        <a href="#servicios">Servicios</a>
+        <a href="#ubicacion">Ubicación</a>
+        <a href="#contacto">Citas</a>
+        <a href="#area-contacto">Contacto</a>
+        <a href="#aviso-privacidad">Aviso</a>
+        <a href="admin.html" target="_blank">Admin</a>
+    </nav>
+</header>
+
+<main>
+    <section id="inicio">
+        <h2 style="text-align:center;">¡Bienvenidos al consultorio Dental de la Dra. Angélica Damián!</h2>
+        <p style="text-align:center; max-width: 800px; margin: 20px auto; font-size: 1.1em;">
+            Nos enfocamos en cuidar la **salud dental infantil** con amor y profesionalismo.
+            Creamos una experiencia agradable y divertida para que cada visita al dentista sea positiva.
+            ¡La sonrisa de cada niño es nuestra prioridad!
+        </p>
+    </section>
+
+    <section id="servicios">
+        <h2 style="text-align:center;">Nuestros Servicios Especializados</h2>
+        <div class="cards">
+            <div class="card"><h3><i class="fas fa-tooth" style="color: var(--color-principal);"></i> Resinas Estéticas</h3><p>Restauración estética y funcional de piezas dañadas por caries o fracturas.</p></div>
+            <div class="card"><h3><i class="fas fa-sitemap" style="color: var(--color-principal);"></i> Prótesis Dental Infantil</h3><p>Reemplazo de dientes de leche perdidos prematuramente, devolviendo función y estética.</p></div>
+            <div class="card"><h3><i class="fas fa-hand-sparkles" style="color: var(--color-principal);"></i> Limpieza y Prevención</h3><p>Eliminación de placa y sarro, aplicación de flúor y selladores para la salud a largo plazo.</p></div>
+            <div class="card"><h3><i class="fas fa-star" style="color: var(--color-principal);"></i> Y Más...</h3><p>Profesionalismo, calidad y experiencia por el bienestar bucal de los pequeños.</p></div>
+        </div>
+    </section>
+
+    <section id="ubicacion">
+        <h2 style="text-align:center;">"UBICACION"</h2>
+        <p style="font-size: 1.1em; text-align:center;">
+            📍 **Calle Jesús Romero Flores #48 Col. Villa Artesanal, C.P. 60257 Paracho, Michoacán.**
+        </p>
+        <p style="font-size: 1.1em; text-align:center; color: var(--color-principal); font-weight: 600;">
+            🕒 Horarios: Lunes a Sábado **12:00 PM - 8:00 PM**
+        </p>
+    </section>
+
+    <section id="contacto">
+        <h2 style="text-align:center;">Agendar Cita</h2>
+        <p style="text-align:center;">Rellene el formulario para solicitar una fecha y hora. Nos pondremos en contacto para confirmar.</p>
+        <form id="citaForm">
+            <input type="text" name="nombre" placeholder="Nombre completo del niño/a" required>
+            <input type="text" name="responsable" placeholder="Nombre del Padre/Madre/Tutor" required>
+            <input type="email" name="email" placeholder="Correo electrónico de contacto" required>
+            <input type="tel" name="telefono" placeholder="Teléfono (10 dígitos)" maxlength="10" pattern="[0-9]{10}" required>
+            <input type="date" name="fecha" required>
+            <input type="time" name="hora" required>
+            <button type="submit" class="btn-primary">Agendar Cita</button>
+        </form>
+        <p id="mensaje"></p>
+
+        <h2 style="text-align:center; margin-top: 40px;">Cita de Emergencia</h2>
+        <form id="emergenciaForm">
+            <input type="text" name="nombreEmergencia" placeholder="Nombre completo" required>
+            <input type="tel" name="telefonoEmergencia" placeholder="Teléfono (10 dígitos)" maxlength="10" pattern="[0-9]{10}" required>
+            <textarea name="motivoEmergencia" placeholder="Describa brevemente la emergencia dental" rows="3" required></textarea>
+            <button type="submit" class="btn-primary">Enviar Emergencia</button>
+        </form>
+        <p id="mensajeEmergencia"></p>
+    </section>
+    
+    <section id="area-contacto">
+        <h2 style="text-align:center;">Comunícate Directamente</h2>
+        <p style="text-align:center;">Este formulario no guarda datos en el panel, envía un correo directo (usando Formspree).</p>
+        <form action="https://formspree.io/f/manpbgnv" method="POST" id="formContacto">
+            <input type="text" name="nombre" placeholder="Tu Nombre completo" required>
+            <input type="email" name="email" placeholder="Correo electrónico" required>
+            <input type="tel" name="telefono" placeholder="Teléfono (10 dígitos)" maxlength="10" pattern="[0-9]{10}" required>
+            <textarea name="mensaje" placeholder="Escribe tu mensaje..." rows="5" required></textarea>
+            <div style="font-size:13px; margin-top:5px;">
+                <input type="checkbox" id="aceptoPrivacidad" name="acepto_privacidad" required>
+                <label for="aceptoPrivacidad">Acepto el tratamiento de mis datos personales conforme al <a href="#aviso-privacidad" style="color:var(--color-principal); text-decoration:underline;">Aviso de Privacidad</a>.</label>
+            </div>
+            <button type="submit" class="btn-primary">Enviar Mensaje</button>
+        </form>
+    </section>
+
+    <section id="aviso-privacidad">
+        <h2 style="text-align:center;">Aviso de Privacidad Integral</h2>
+        <p>El consultorio **ODONTOLOGÍA INFANTIL** de la Dra. Angélica Damián, en estricto cumplimiento de la **NOM-024-SSA3-2012** (Sistemas de Información de Registro Electrónico para la Salud) y la **Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP)**, le informa lo siguiente:</p>
+
+        <h3>1. Datos Personales Recabados:</h3>
+        <p>Recabamos sus datos de identificación (nombre, teléfono, correo) y, en el panel de administración, información clínica relevante para la salud y el tratamiento del paciente. Esta información es resguardada bajo medidas de seguridad para garantizar su **confidencialidad, integridad y disponibilidad**.</p>
+
+        <h3>2. Finalidades del Tratamiento:</h3>
+        <p>La información será utilizada exclusivamente para: <strong>agendar citas médicas</strong>, proporcionar la **Atención Médica** necesaria, documentar el **Registro Electrónico en Salud (SIRES)** y dar seguimiento a los servicios odontológicos.</p>
+
+        <h3>3. Medidas de Seguridad:</h3>
+        <p>Su Expediente Clínico Electrónico (ECE) y la información de registro son tratados con discreción y confidencialidad. Los **Sistemas de Información de Registro Electrónico para la Salud (SIRES)** utilizados observan estándares en materia de seguridad de la información para asegurar la trazabilidad y no repudio de la información.</p>
+        
+        <h3>4. Derechos ARCO:</h3>
+        <p>Usted puede ejercer sus derechos de **Acceso, Rectificación, Cancelación u Oposición (ARCO)** de sus datos personales mediante solicitud enviada al correo: **angelicadm23@gmail.com**.</p>
+    </section>
+</main>
+
+<footer>
+    <p>&copy; 2025 DRA. ANGÉLICA DAMIÁN - ODONTOLOGÍA INFANTIL</p>
+    <p>
+        <a href="https://wa.me/524431108335" target="_blank" style="text-decoration:none; margin-right: 15px;"><i class="fab fa-whatsapp"></i> WhatsApp: 443 110 8335</a>
+        <a href="mailto:angelicadm23@gmail.com" style="text-decoration:none;"><i class="far fa-envelope"></i> Correo: angelicadm23@gmail.com</a>
+    </p>
+</footer>
+
+<script>
+    const API_URL = 'guardar_cita.php'; 
+
+    async function enviarCita(datos) {
+        const mensajeElement = datos.tipo === 'Cita Regular' ? document.getElementById('mensaje') : document.getElementById('mensajeEmergencia');
+        const formElement = datos.tipo === 'Cita Regular' ? document.getElementById('citaForm') : document.getElementById('emergenciaForm');
+        const boton = formElement.querySelector('button');
+        
+        boton.disabled = true; 
+        boton.textContent = 'Enviando...';
+        mensajeElement.textContent = '';
+
+        try {
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(datos)
+            });
+
+            const resultado = await response.json();
+
+            if (response.ok && resultado.success) {
+                mensajeElement.textContent = `✅ ¡${datos.tipo} enviada con éxito!`;
+                mensajeElement.style.color = 'green';
+                formElement.reset();
+            } else {
+                throw new Error(resultado.message || 'Error desconocido del servidor.');
+            }
+
+        } catch (error) {
+            console.error("Error de conexión o servidor:", error);
+            mensajeElement.textContent = `❌ ERROR: No se pudo completar la solicitud. Verifique el servidor.`;
+            mensajeElement.style.color = 'red';
+        } finally {
+            boton.disabled = false;
+            boton.textContent = datos.tipo === 'Cita Regular' ? 'Agendar Cita' : 'Enviar Emergencia';
+        }
+    }
+
+    const formCita = document.getElementById('citaForm');
+    if (formCita) {
+        formCita.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const datosCita = {
+                tipo: 'Cita Regular',
+                nombre: formCita.nombre.value,
+                responsable: formCita.responsable.value,
+                email: formCita.email.value,
+                telefono: formCita.telefono.value,
+                fecha: formCita.fecha.value,
+                hora: formCita.hora.value,
+                motivo: null
+            };
+            enviarCita(datosCita);
+        });
+    }
+
+    const formEmergencia = document.getElementById('emergenciaForm');
+    if (formEmergencia) {
+        formEmergencia.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const datosEmergencia = {
+                tipo: 'Emergencia',
+                nombre: formEmergencia.nombreEmergencia.value,
+                responsable: null,
+                email: null,
+                telefono: formEmergencia.telefonoEmergencia.value,
+                fecha: null, 
+                hora: null,
+                motivo: formEmergencia.motivoEmergencia.value,
+            };
+            enviarCita(datosEmergencia);
+        });
+    }
+
+    document.querySelectorAll('input[type="tel"]').forEach(campo => {
+        campo.addEventListener('input', () => {
+            campo.value = campo.value.replace(/\D/g, '');
+        });
+    });
+</script>
+</body>
+</html>
